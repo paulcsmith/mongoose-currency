@@ -1,0 +1,33 @@
+{
+  "name": "mongoose-currency",
+  "version": "0.0.1",
+  "description": "Adds schema type \"currency\" to mongoose. Sets as int and gets as a floating point number",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/catalystmediastudios/mongoose-currency.git"
+  },
+  "keywords": [
+    "mongoose",
+    "currency",
+    "money"
+  ],
+  "author": {
+    "name": "Paul Smith",
+    "email": "catalystmediastudios@gmail.com"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "80f9b6fa07591917779b470a3a92c6fe3aadd9fe",
+  "devDependencies": {
+    "mocha": "1.9.x",
+    "should": "*",
+    "mongoose": "3.x"
+  },
+  "peerDependencies": {
+    "mongoose": "3.x"
+  }
+}
