@@ -1,10 +1,10 @@
 var should = require('should');
 var mongoose = require('mongoose');
-var Currency = require('../index.js').loadType(mongoose);
+require('../index.js').loadType(mongoose);
 var Schema = mongoose.Schema;
 
 var ProductSchema = Schema({
-  price: { type: Currency }
+  price: { type: mongoose.Types.Currency }
 });
 var Product = mongoose.model('Product', ProductSchema);
 
@@ -14,6 +14,24 @@ describe('Currency Type', function () {
       var currencyModule = require('../index.js');
       currencyModule.should.have.ownProperty('loadType');
       currencyModule.loadType.should.be.a('function');
+    });
+  });
+
+  describe('mongoose.Schema.Types.Currency', function () {
+    before(function () {
+      var currencyModule = require('../index.js').loadType(mongoose);
+    });
+    it('mongoose.Schema.Types should have a type called Currency', function () {
+      mongoose.Schema.Types.should.have.ownProperty('Currency');
+    });
+    it('mongoose.Types should have a type called Currency', function () {
+      mongoose.Types.should.have.ownProperty('Currency');
+    });
+    it('should be a function', function () {
+      mongoose.Schema.Types.Currency.should.be.a('function');
+    });
+    it('should have a method called cast', function () {
+      mongoose.Schema.Types.Currency.prototype.cast.should.be.a('function');
     });
   });
 
@@ -35,25 +53,29 @@ describe('Currency Type', function () {
       product.price.should.equal(500.67);
     });
     it("should work with whole number", function () {
-      var product = new Product({ price: 500})
+      var product = new Product({ price: 500 })
       product.price.should.equal(500);
     });
     it("should work with a number with decimal/cents", function () {
-      var product = new Product({ price: 500.55})
+      var product = new Product({ price: 500.55 })
       product.price.should.equal(500.55);
     });
-    it('should not round when more there are more than two decimal points over', function () {
-      var product = new Product({ price: 500.5588})
+    it('should not round when there are > two digits past decimal point', function () {
+      var product = new Product({ price: 500.5588 })
       product.price.should.equal(500.55);
       product.price = "$500.41999";
       product.price.should.equal(500.41);
     });
     it('should not round when adding', function () {
-      var product = new Product({ price: 1.19})
-      var product2 = new Product({ price: 1.03})
+      var product = new Product({ price: 1.19 })
+      var product2 = new Product({ price: 1.03 })
       var sum = product.price + product2.price;
       sum = sum.toFixed(2) * 1;
       sum.should.equal(2.22);
+    });
+    it('should accept negative currency', function () {
+      var product = new Product({ price: "-$5,000.55" })
+      product.price.should.equal(-5000.55);
     });
   });
 
@@ -80,7 +102,7 @@ describe('Currency Type', function () {
     });
     it('should be able to store values and adding them together returns the correct value', function (done) {
       var product1 = new Product({ price: 1.03 });
-      var product2 = new Product({ price: 1.03});
+      var product2 = new Product({ price: 1.03 });
       product1.save(function (err, product) {
         product2.save(function (err, product2) {
           var sum = product1.price + product2.price;

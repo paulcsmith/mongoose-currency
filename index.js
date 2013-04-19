@@ -15,10 +15,17 @@ Currency.prototype.checkRequired = function (val) {
 
 Currency.prototype.cast = function(val) {
   var currencyAsString = val.toString();
-  var digitsAndDotRegex = /\d*\.\d{1,2}/;
-  currencyAsString = currencyAsString.replace(/\,+|[a-zA-Z]+/g, "");
-  var currency = digitsAndDotRegex.exec(currencyAsString + ".0")[0];
-  return currency * 1;
+  var findDigitsAndDotRegex = /\d*\.\d{1,2}/;
+  var findCommasAndLettersRegex = /\,+|[a-zA-Z]+/g;
+  var findNegativeRegex = /^-/;
+  var currency;
+  currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
+  currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
+  if ( findNegativeRegex.test(currencyAsString) ) {
+    return currency * -1;
+  } else{
+    return currency * 1;
+  };
 };
 
 /*!
