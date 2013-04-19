@@ -73,8 +73,12 @@ describe('Currency Type', function () {
       sum = sum.toFixed(2) * 1;
       sum.should.equal(2.22);
     });
-    it('should accept negative currency', function () {
+    it('should accept negative currency as a String', function () {
       var product = new Product({ price: "-$5,000.55" })
+      product.price.should.equal(-5000.55);
+    });
+    it('should accept negative currency as a Number', function () {
+      var product = new Product({ price: -5000.55 })
       product.price.should.equal(-5000.55);
     });
   });

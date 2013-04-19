@@ -1,16 +1,8 @@
 var mongoose = require('mongoose')
-    , Schema = mongoose.Schema
-    , SchemaType = mongoose.SchemaType
-    , Types = mongoose.Types
-    , mongo = mongoose.mongo;
+    , SchemaType = mongoose.SchemaType;
 
 function Currency(path, options) {
-  SchemaType.call(this, path, options);
-}
-
-// allow { required: true }
-Currency.prototype.checkRequired = function (val) {
-  return undefined !== value;
+  mongoose.SchemaTypes.Number.call(this, path, options);
 }
 
 Currency.prototype.cast = function(val) {
