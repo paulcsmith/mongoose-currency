@@ -37,6 +37,7 @@ in the root directory of the project run `mocha test`
 * Extend from the number type so that it inherites max, and min schema options
 * Tests for making the value required in the Schema
 * Add support for negative numbers
+* Add option for what Currency strips by default (, or .) Will work better in countries where values are represented like this: 1.000.000,00
 
 ## Gotchas
 
