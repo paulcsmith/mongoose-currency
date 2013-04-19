@@ -45,8 +45,18 @@ The currency is returned as a floating point. When adding two floating points to
 1.03+1.19; // 2.2199999999999998
 ```
 
-So remember to call toFixed to get your number back how you need it
+So remember to call toFixed to get your number back how you need it.
+
 ```JavaScript
 var sum = 1.03+1.19;
 sum.toFixed(2); // "2.22"
+
+// Or do this..
+
+var num1 = 1.03; // These numbers would normally be from your mongoose record
+var num2 = 1.19;
+var sum = num1*100 + num2*100;
+sum / 100; // Number: 2.22
+
+```
 
