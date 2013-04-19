@@ -41,7 +41,7 @@ in the root directory of the project run `mocha test`
 
 ## Gotchas
 
-The currency is returned as a floating point. When adding two floating points together it can have rounging errors
+The currency is returned as a floating point. When adding two floating points together it can have rounding errors
 ```
 1.03+1.19; // 2.2199999999999998
 ```
