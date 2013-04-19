@@ -1,10 +1,10 @@
-## Adds "Currency" as a type in for Mongoose Schemas
+## What it does
 
-* Strips out symbols from the beginning of strings (sometimes users include the currency sybmole)
-* Stripes out commas (sometimes users add in commas or copy paste values into forms)
+* Strips out symbols from the beginning of strings (sometimes users include the currency symbol)
+* Stripes out commas (sometimes users add in commas or copy paste values into forms, e.g. "1,000.50)
 * Only save from two digits past the decimal point ("$500.559" is converted to 500.55 and doesn't round)
 * Strips [a-zA-Z] from strings
-* You can also pass in numbers and not string representations of currencies
+* Pass in a string or a number. Numbers will be converted without rounding (e.g. 500.559 -> 500.55)
 
 ## How to use
 
