@@ -42,6 +42,19 @@ describe('Currency Type', function () {
       var product = new Product({ price: 500.55})
       product.price.should.equal(500.55);
     });
+    it('should not round when more there are more than two decimal points over', function () {
+      var product = new Product({ price: 500.5588})
+      product.price.should.equal(500.55);
+      product.price = "$500.41999";
+      product.price.should.equal(500.41);
+    });
+    it('should not round when adding', function () {
+      var product = new Product({ price: 1.19})
+      var product2 = new Product({ price: 1.03})
+      var sum = product.price + product2.price;
+      sum = sum.toFixed(2) * 1;
+      sum.should.equal(2.22);
+    });
   });
 
   describe('setting a currency field and saving the record', function () {
@@ -59,10 +72,21 @@ describe('Currency Type', function () {
       });
     });
     it('should not round down and should return the correct value', function (done) {
-      var product = new Product({ price: "$1,000.05" });
+      var product = new Product({ price: "$1,000.19" });
       product.save(function (err, new_product) {
-        new_product.price.should.equal(1000.05);
+        new_product.price.should.equal(1000.19);
         done();
+      });
+    });
+    it('should be able to store values and adding them together returns the correct value', function (done) {
+      var product1 = new Product({ price: 1.03 });
+      var product2 = new Product({ price: 1.03});
+      product1.save(function (err, product) {
+        product2.save(function (err, product2) {
+          var sum = product1.price + product2.price;
+          sum.should.equal(2.06);
+          done();
+        })
       });
     });
   });
