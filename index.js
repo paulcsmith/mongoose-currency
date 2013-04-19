@@ -17,7 +17,7 @@ Currency.prototype.cast = function(val) {
   var currencyAsString = val.toString();
   var digitsAndDotRegex = /\d*\.\d{1,2}/;
   currencyAsString = currencyAsString.replace(/\,+|[a-zA-Z]+/g, "");
-  var currency = digitsAndDotRegex.exec(currencyAsString)[0];
+  var currency = digitsAndDotRegex.exec(currencyAsString + ".0")[0];
   return currency * 1;
 };
 
