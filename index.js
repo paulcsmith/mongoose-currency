@@ -1,5 +1,9 @@
-var mongoose = require('mongoose')
-    , SchemaType = mongoose.SchemaType;
+var mongoose = require('mongoose');
+
+module.exports.loadType = function(mongoose) {
+  mongoose.SchemaTypes.Currency = Currency;
+  return mongoose.Types.Currency = Currency;
+};
 
 function Currency(path, options) {
   mongoose.SchemaTypes.Number.call(this, path, options);
@@ -24,9 +28,4 @@ Currency.prototype.cast = function(val) {
  * inherits
  */
 
-Currency.prototype.__proto__ = SchemaType.prototype;
-
-module.exports.loadType = function(mongoose) {
-  mongoose.SchemaTypes.Currency = Currency;
-  return mongoose.Types.Currency = Currency;
-};
+Currency.prototype.__proto__ = mongoose.SchemaTypes.Number.prototype;

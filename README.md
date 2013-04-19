@@ -12,11 +12,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 // Will add the Currency type to the Mongoose Schema types
-var Currency = require('mongoose-currency').loadType(mongoose);
+require('mongoose-currency').loadType(mongoose);
+var Currency - mongoose.Types.Currency;
 
-// If you have the Currency variable declared you can omit 'mongoose.Types'
+// If you don't have the Currency variable declared you can use 'mongoose.Types.Currency'
 var ProductSchema = Schema({
-  price: { type: mongoose.Types.Currency }
+  price: { type: Currency }
 });
 
 var Product = mongoose.model('Product', ProductSchema);

@@ -1,10 +1,10 @@
 var should = require('should');
 var mongoose = require('mongoose');
-require('../index.js').loadType(mongoose);
+var Currency = require('../index.js').loadType(mongoose);
 var Schema = mongoose.Schema;
 
 var ProductSchema = Schema({
-  price: { type: mongoose.Types.Currency }
+  price: { type: Currency }
 });
 var Product = mongoose.model('Product', ProductSchema);
 
@@ -80,6 +80,23 @@ describe('Currency Type', function () {
     it('should accept negative currency as a Number', function () {
       var product = new Product({ price: -5000.55 })
       product.price.should.equal(-5000.55);
+    });
+  });
+
+  describe('using a schema with advanced options', function () {
+    before(function () {
+      var advancedSchema = Schema({
+        price: { type: Currency, required: true }
+      })
+      mongoose.model('AdvancedModel', advancedSchema);
+    });
+
+    it('should handle required like a number', function () {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.save(function (err, record) {
+        if (err) throw err;
+      })
     });
   });
 
