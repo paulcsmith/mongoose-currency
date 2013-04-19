@@ -22,5 +22,13 @@ describe('Currency Type', function () {
       var product = new Product({ price: "500" })
       product.price.should.equal(500);
     })
+    it("should convert whole number", function () {
+      var product = new Product({ price: 500})
+      product.price.should.equal(500);
+    })
+    it("should convert number with decimal/cents", function () {
+      var product = new Product({ price: 500.55})
+      product.price.should.equal(500.55);
+    })
   })
 })
