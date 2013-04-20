@@ -62,21 +62,21 @@ describe('Currency Type', function () {
     });
     it("should work with whole number", function () {
       var product = new Product({ price: 500 })
-      product.price.should.equal(50000);
+      product.price.should.equal(500);
     });
-    it("should work with a number with decimal/cents", function () {
+    it("should round passed in number if they are floating point nums", function () {
       var product = new Product({ price: 500.55 })
-      product.price.should.equal(50055);
+      product.price.should.equal(501);
     });
-    it('should not round when there are > two digits past decimal point', function () {
+    it('should round when there are > two digits past decimal point', function () {
       var product = new Product({ price: 500.5588 })
-      product.price.should.equal(50055);
+      product.price.should.equal(501);
       product.price = "$500.41999";
       product.price.should.equal(50041);
     });
     it('should not round when adding', function () {
-      var product = new Product({ price: 1.19 })
-      var product2 = new Product({ price: 1.03 })
+      var product = new Product({ price: 119 })
+      var product2 = new Product({ price: 103 })
       var sum = product.price + product2.price;
       sum.should.equal(222);
     });
@@ -85,8 +85,8 @@ describe('Currency Type', function () {
       product.price.should.equal(-500055);
     });
     it('should accept negative currency as a Number', function () {
-      var product = new Product({ price: -5000.55 })
-      product.price.should.equal(-500055);
+      var product = new Product({ price: -5000 })
+      product.price.should.equal(-5000);
     });
   });
 
@@ -101,19 +101,25 @@ describe('Currency Type', function () {
       var product = new Product({ price: "$9.95" });
       product.save(function (err, new_product) {
         new_product.price.should.equal(995);
-        done();
+        Product.findById(new_product.id, function (err, product){
+          product.price.should.equal(995);
+          done();
+        });
       });
     });
     it('should not round down and should return the correct value', function (done) {
       var product = new Product({ price: "$1,000.19" });
       product.save(function (err, new_product) {
         new_product.price.should.equal(100019);
-        done();
+        Product.findById(new_product.id, function (err, product){
+          product.price.should.equal(100019);
+          done();
+        });
       });
     });
     it('should be able to store values and adding them together returns the correct value', function (done) {
-      var product1 = new Product({ price: 1.03 });
-      var product2 = new Product({ price: 1.03 });
+      var product1 = new Product({ price: 103 });
+      var product2 = new Product({ price: 103 });
       product1.save(function (err, product) {
         product2.save(function (err, product2) {
           var sum = product1.price + product2.price;
@@ -127,7 +133,7 @@ describe('Currency Type', function () {
   describe('using a schema with advanced options (required, min, max)', function () {
     before(function () {
       var advancedSchema = Schema({
-        price: { type: Currency, required: true, min: 0, max: 20000 }
+        price: { type: Currency, required: true, min: 0, max: 200 }
       })
       mongoose.model('AdvancedModel', advancedSchema);
     });

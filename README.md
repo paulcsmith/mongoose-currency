@@ -1,11 +1,13 @@
 ## What it does
 
-* Saves as an integer (by multiplying by 100) to prevent rounding errors when performing calculations (See gotchas for details)
+* Saves a String as an integer (by stripping no digits and multiplying by 100) to prevent rounding errors when performing calculations (See gotchas for details)
 * Strips out symbols from the beginning of strings (sometimes users include the currency symbol)
 * Strips out commas (sometimes users add in commas or copy paste values into forms, e.g. "1,000.50)
 * Only save from two digits past the decimal point ("$500.559" is converted to 50055 and doesn't round)
 * Strips [a-zA-Z] from strings
-* Pass in a string or a number. Numbers will be converted without rounding (e.g. 500.559 -> 50055)
+* Pass in a string or a number. Numbers will be stored AS IS.
+* Assumes that if set the value to an integer you have already done the conversion (e.g. 50000 = $500.00)
+* If a floating point number is passed in it will round it. (500.55 -> 501). Just pass in integers to be safe.
 
 ## How to use
 
@@ -25,15 +27,15 @@ var Product = mongoose.model('Product', ProductSchema);
 
 var product = new Product({ price: "$1,200.55" });
 product.price; // Number: 120055
-product.price = 1200.5599;
-product.price; // Number 120055 It will not round and will only save with a precision of 2
+product.price = 1200;
+product.price; // Number 1200 It will not round or multiply. Stored AS IS and should represent $12.00
 ```
 ### Schema options
 
 Accepts mongoose [number schema options](http://mongoosejs.com/docs/api.html#schema-number-js)
 
 ```JavaScript
-// Will validate that the minimum is 200.00 and max is 500.00
+// Will validate that the minimum is $200.00 and max is $500.00
 var ProductSchema = Schema({
   price: { type: Currency, required: true, min: -20000, max: 50000 }
 });
@@ -88,11 +90,11 @@ record.price; // 10050 which represents $100.50
 record.price.toFixed(2); // return 100.50
 ```
 
-When you set an integer it will be multiplied by 100!
+When you set an integer it will NOT be multiplied by 100. It will be stored AS IS!
 This is on purpose. This library is mainly for accepting USER generated inputs from forms, etc.
 ```
 product.price = 100;
-product.price; // Returns 10000
+product.price; // Returns 100 Does not multiply by 100. Represents $1.00
 ```
 
 ### Queries and validators

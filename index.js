@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var _ = require('underscore');
 
 module.exports.loadType = function(mongoose) {
   mongoose.SchemaTypes.Currency = Currency;
@@ -10,19 +11,36 @@ function Currency(path, options) {
 }
 
 Currency.prototype.cast = function(val) {
-  var currencyAsString = val.toString();
-  var findDigitsAndDotRegex = /\d*\.\d{1,2}/;
-  var findCommasAndLettersRegex = /\,+|[a-zA-Z]+/g;
-  var findNegativeRegex = /^-/;
-  var currency;
-  currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
-  currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
-  if ( findNegativeRegex.test(currencyAsString) ) {
-    return (currency * -100).toFixed(0) * 1;
-  } else{
-    return (currency * 100).toFixed(0) * 1;
-  };
+  if ( _.isString(val) ) {
+    var currencyAsString = val.toString();
+    var findDigitsAndDotRegex = /\d*\.\d{1,2}/;
+    var findCommasAndLettersRegex = /\,+|[a-zA-Z]+/g;
+    var findNegativeRegex = /^-/;
+    var currency;
+    currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
+    currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
+    if ( findNegativeRegex.test(currencyAsString) ) {
+      return (currency * -100).toFixed(0) * 1;
+    } else{
+      return (currency * 100).toFixed(0) * 1;
+    };
+  } else if ( _.isNumber(val) ) {
+    return val.toFixed(0) * 1;
+  } else {
+    return new Error('Should pass in a number or string');
+  }
 };
+
+function handleSingle (val) {
+  return this.cast(val)
+}
+
+function handleArray (val) {
+  var self = this;
+  return val.map( function (m) {
+    return self.cast(m)
+  });
+}
 
 /*!
  * inherits
