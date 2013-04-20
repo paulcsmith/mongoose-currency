@@ -104,5 +104,7 @@ So to get values greater than $100.00 you need to run your query with 100 * 100 
 *It is considered best practice to store money values as ints.
 It will cause far fewer problems down the road*
 
+For further reading: http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+
 Just remember to call toFixed(2) whenever you want to display those values to end users.
 

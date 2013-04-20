@@ -37,12 +37,12 @@ describe('Currency Type', function () {
 
   describe('setting a currency field and not saving the record', function () {
     it("should store positive as an integer by multiplying by 100", function () {
-      var product = new Product({ price: "$1,000.55" });
-      product.price.should.equal(1000.55 * 100);
+      var product = new Product({ price: "$9.95" });
+      product.price.should.equal(995);
     });
     it("should store negative as an integer by multiplying by -100", function () {
-      var product = new Product({ price: "-$1,000.55" });
-      product.price.should.equal(1000.55 * -100);
+      var product = new Product({ price: "-$9.95" });
+      product.price.should.equal(-995);
     });
     it("should strip out '$' and ','", function () {
       var product = new Product({ price: "$1,000.55" });
@@ -98,9 +98,9 @@ describe('Currency Type', function () {
       mongoose.connection.db.dropDatabase();
     });
     it('should not round up and should return the correct value', function (done) {
-      var product = new Product({ price: "$1,000.78" });
+      var product = new Product({ price: "$9.95" });
       product.save(function (err, new_product) {
-        new_product.price.should.equal(100078);
+        new_product.price.should.equal(995);
         done();
       });
     });
