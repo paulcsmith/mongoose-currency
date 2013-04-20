@@ -117,10 +117,10 @@ describe('Currency Type', function () {
     });
   });
 
-  describe('using a schema with advanced options', function () {
+  describe('using a schema with advanced options (required, min, max)', function () {
     before(function () {
       var advancedSchema = Schema({
-        price: { type: Currency, required: true }
+        price: { type: Currency, required: true, min: 0, max: 200 }
       })
       mongoose.model('AdvancedModel', advancedSchema);
     });
@@ -134,15 +134,48 @@ describe('Currency Type', function () {
         done();
       });
     });
-    it('should fail validation when a price is not set and field is required', function (done) {
+    it('should fail validation when a price is NOT set and field is required', function (done) {
       var advancedModel = mongoose.model('AdvancedModel');
       var record = new advancedModel();
       record.validate(function (err) {
         should.exist(err);
         err.errors.should.have.property('price');
+        err.errors.price.type.should.equal('required');
         done();
       });
     });
+    it('should pass validation when value is in between min and max values', function (done) {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.price = 100;
+      record.validate(function (err) {
+        should.not.exist(err);
+        done();
+      });
+    });
+    it('should fail validation when value is below min', function (done) {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.price = -100;
+      record.validate(function (err) {
+        should.exist(err);
+        err.errors.should.have.property('price');
+        err.errors.price.type.should.equal('min');
+        done();
+      });
+    });
+    it('should fail validation when value is higher than max', function (done) {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.price = 500;
+      record.validate(function (err) {
+        should.exist(err);
+        err.errors.should.have.property('price');
+        err.errors.price.type.should.equal('max');
+        done();
+      });
+    });
+
   });
 
 })

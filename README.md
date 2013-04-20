@@ -36,11 +36,10 @@ in the root directory of the project run `mocha test`
 
 ## Todo
 
-* Extend from the number type so that it inherits max, and min schema options
-* Tests for making the value required in the Schema
-* Tests for common number Schema options
 * Add currency validation?
 * Add option for what Currency strips by default (, or .) Will work better in countries where values are represented like this: 1.000.000,00
+* Add option for precision
+* Add currency validator?
 
 ## Gotchas
 
