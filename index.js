@@ -18,9 +18,9 @@ Currency.prototype.cast = function(val) {
   currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
   currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
   if ( findNegativeRegex.test(currencyAsString) ) {
-    return currency * -1;
+    return currency * -100;
   } else{
-    return currency * 1;
+    return currency * 100;
   };
 };
 

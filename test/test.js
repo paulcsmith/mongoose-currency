@@ -36,50 +36,57 @@ describe('Currency Type', function () {
   });
 
   describe('setting a currency field and not saving the record', function () {
+    it("should store positive as an integer by multiplying by 100", function () {
+      var product = new Product({ price: "$1,000.55" });
+      product.price.should.equal(1000.55 * 100);
+    });
+    it("should store negative as an integer by multiplying by -100", function () {
+      var product = new Product({ price: "-$1,000.55" });
+      product.price.should.equal(1000.55 * -100);
+    });
     it("should strip out '$' and ','", function () {
       var product = new Product({ price: "$1,000.55" });
-      product.price.should.equal(1000.55);
+      product.price.should.equal(100055);
     });
     it("should strip out letters and return correct money value", function () {
       var product = new Product({ price: "HF1sdf0.55" });
-      product.price.should.equal(10.55);
+      product.price.should.equal(1055);
     });
     it("should work as a string when there are no cents", function () {
       var product = new Product({ price: "500" })
-      product.price.should.equal(500);
+      product.price.should.equal(50000);
     });
     it("should work as a string when there are cents", function () {
       var product = new Product({ price: "500.67" })
-      product.price.should.equal(500.67);
+      product.price.should.equal(50067);
     });
     it("should work with whole number", function () {
       var product = new Product({ price: 500 })
-      product.price.should.equal(500);
+      product.price.should.equal(50000);
     });
     it("should work with a number with decimal/cents", function () {
       var product = new Product({ price: 500.55 })
-      product.price.should.equal(500.55);
+      product.price.should.equal(50055);
     });
     it('should not round when there are > two digits past decimal point', function () {
       var product = new Product({ price: 500.5588 })
-      product.price.should.equal(500.55);
+      product.price.should.equal(50055);
       product.price = "$500.41999";
-      product.price.should.equal(500.41);
+      product.price.should.equal(50041);
     });
     it('should not round when adding', function () {
       var product = new Product({ price: 1.19 })
       var product2 = new Product({ price: 1.03 })
       var sum = product.price + product2.price;
-      sum = sum.toFixed(2) * 1;
-      sum.should.equal(2.22);
+      sum.should.equal(222);
     });
     it('should accept negative currency as a String', function () {
       var product = new Product({ price: "-$5,000.55" })
-      product.price.should.equal(-5000.55);
+      product.price.should.equal(-500055);
     });
     it('should accept negative currency as a Number', function () {
       var product = new Product({ price: -5000.55 })
-      product.price.should.equal(-5000.55);
+      product.price.should.equal(-500055);
     });
   });
 
@@ -93,14 +100,14 @@ describe('Currency Type', function () {
     it('should not round up and should return the correct value', function (done) {
       var product = new Product({ price: "$1,000.78" });
       product.save(function (err, new_product) {
-        new_product.price.should.equal(1000.78);
+        new_product.price.should.equal(100078);
         done();
       });
     });
     it('should not round down and should return the correct value', function (done) {
       var product = new Product({ price: "$1,000.19" });
       product.save(function (err, new_product) {
-        new_product.price.should.equal(1000.19);
+        new_product.price.should.equal(100019);
         done();
       });
     });
@@ -110,7 +117,7 @@ describe('Currency Type', function () {
       product1.save(function (err, product) {
         product2.save(function (err, product2) {
           var sum = product1.price + product2.price;
-          sum.should.equal(2.06);
+          sum.should.equal(206);
           done();
         })
       });
@@ -120,7 +127,7 @@ describe('Currency Type', function () {
   describe('using a schema with advanced options (required, min, max)', function () {
     before(function () {
       var advancedSchema = Schema({
-        price: { type: Currency, required: true, min: 0, max: 200 }
+        price: { type: Currency, required: true, min: 0, max: 20000 }
       })
       mongoose.model('AdvancedModel', advancedSchema);
     });
