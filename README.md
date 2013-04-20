@@ -2,7 +2,7 @@
 
 * Saves as an integer (by multiplying by 100) to prevent rounding errors when performing calculations (See gotchas for details)
 * Strips out symbols from the beginning of strings (sometimes users include the currency symbol)
-* Stripes out commas (sometimes users add in commas or copy paste values into forms, e.g. "1,000.50)
+* Strips out commas (sometimes users add in commas or copy paste values into forms, e.g. "1,000.50)
 * Only save from two digits past the decimal point ("$500.559" is converted to 50055 and doesn't round)
 * Strips [a-zA-Z] from strings
 * Pass in a string or a number. Numbers will be converted without rounding (e.g. 500.559 -> 50055)
@@ -28,6 +28,19 @@ product.price; // Number: 120055
 product.price = 1200.5599;
 product.price; // Number 120055 It will not round and will only save with a precision of 2
 ```
+### Schema options
+
+Accepts mongoose [number schema options](http://mongoosejs.com/docs/api.html#schema-number-js)
+
+```JavaScript
+// Will validate that the minimum is 200.00 and max is 500.00
+var ProductSchema = Schema({
+  price: { type: Currency, required: true, min: -20000, max: 50000 }
+});
+
+// See Gotchas (bottom) for details
+```
+### Displaying to end users (views, reports, etc.)
 
 To display values to end users remember to call `.toFixed(2)`
 ```JavaScript
@@ -46,6 +59,7 @@ in the root directory of the project run `mocha test`
 * Add option for what Currency strips by default (, or .) Will work better in countries where values are represented like this: 1.000.000,00
 * Add option for precision
 * Add currency validator?
+* Change min/max validators to accept currency format e.g. 200 is $200.00 not $2.00. Not sure if this is the best way or not.
 
 ## Gotchas
 
@@ -55,7 +69,7 @@ The currency is returned as an integer. Why? Because adding two floating points 
 1.03+1.19; // 2.2199999999999998
 ```
 
-So this is how you would work with currency with mongoose-currency.
+### Calculations with currency with mongoose-currency.
 
 ```JavaScript
 var product1 = Product.findById('id');
@@ -66,7 +80,7 @@ var sum = product1.price+product2.price / 100;
 sum.toFixed(2); // returns a number: 2.22
 ```
 
-Displaying values for end users
+### Displaying values for end users
 
 ```JavaScript
 var record = Product.findById('yourid');
@@ -80,6 +94,8 @@ This is on purpose. This library is mainly for accepting USER generated inputs f
 product.price = 100;
 product.price; // Returns 10000
 ```
+
+### Queries and validators
 
 Remember when doing queries that to find values greater than, less than, etc. you need to multiply by 100!
 
