@@ -83,23 +83,6 @@ describe('Currency Type', function () {
     });
   });
 
-  describe('using a schema with advanced options', function () {
-    before(function () {
-      var advancedSchema = Schema({
-        price: { type: Currency, required: true }
-      })
-      mongoose.model('AdvancedModel', advancedSchema);
-    });
-
-    it('should handle required like a number', function () {
-      var advancedModel = mongoose.model('AdvancedModel');
-      var record = new advancedModel();
-      record.save(function (err, record) {
-        if (err) throw err;
-      })
-    });
-  });
-
   describe('setting a currency field and saving the record', function () {
     before(function () {
       mongoose.connect('localhost', 'mongoose_currency_test');
@@ -130,6 +113,34 @@ describe('Currency Type', function () {
           sum.should.equal(2.06);
           done();
         })
+      });
+    });
+  });
+
+  describe('using a schema with advanced options', function () {
+    before(function () {
+      var advancedSchema = Schema({
+        price: { type: Currency, required: true }
+      })
+      mongoose.model('AdvancedModel', advancedSchema);
+    });
+
+    it('should pass validation when a price is set and field is required', function (done) {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.price = 100.00;
+      record.validate(function (err) {
+        should.not.exist(err);
+        done();
+      });
+    });
+    it('should fail validation when a price is not set and field is required', function (done) {
+      var advancedModel = mongoose.model('AdvancedModel');
+      var record = new advancedModel();
+      record.validate(function (err) {
+        should.exist(err);
+        err.errors.should.have.property('price');
+        done();
       });
     });
   });
