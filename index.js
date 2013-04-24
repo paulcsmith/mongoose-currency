@@ -17,30 +17,19 @@ Currency.prototype.cast = function(val) {
     var findCommasAndLettersRegex = /\,+|[a-zA-Z]+/g;
     var findNegativeRegex = /^-/;
     var currency;
-    currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
-    currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
+    currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, '');
+    currency = findDigitsAndDotRegex.exec(currencyAsString + '.0')[0]; // Adds .0 so it works with whole numbers
     if ( findNegativeRegex.test(currencyAsString) ) {
       return (currency * -100).toFixed(0) * 1;
     } else{
       return (currency * 100).toFixed(0) * 1;
-    };
+    }
   } else if ( _.isNumber(val) ) {
     return val.toFixed(0) * 1;
   } else {
     return new Error('Should pass in a number or string');
   }
 };
-
-function handleSingle (val) {
-  return this.cast(val)
-}
-
-function handleArray (val) {
-  var self = this;
-  return val.map( function (m) {
-    return self.cast(m)
-  });
-}
 
 /*!
  * inherits

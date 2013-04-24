@@ -62,6 +62,8 @@ in the root directory of the project run `mocha test`
 * Add option for precision
 * Add currency validator?
 * Change min/max validators to accept currency format e.g. 200 is $200.00 not $2.00. Not sure if this is the best way or not.
+* Add property to returned value that is a formatted version of the price?
+* Add a getter that does / 100 automatically?
 
 ## Gotchas
 
