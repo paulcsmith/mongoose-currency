@@ -110,3 +110,7 @@ For further reading: http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.h
 
 Just remember to call toFixed(2) whenever you want to display those values to end users.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paulcsmith/mongoose-currency/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
