@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose');
-var _ = require('underscore');
 var util = require('util');
 
 module.exports.loadType = function(mongoose) {
@@ -19,7 +18,7 @@ function Currency(path, options) {
 util.inherits(Currency, mongoose.SchemaTypes.Number);
 
 Currency.prototype.cast = function(val) {
-  if ( _.isString(val) ) {
+  if ( isType('String', val) ) {
     var currencyAsString = val.toString();
     var findDigitsAndDotRegex = /\d*\.\d{1,2}/;
     var findCommasAndLettersRegex = /\,+|[a-zA-Z]+/g;
@@ -32,9 +31,20 @@ Currency.prototype.cast = function(val) {
     } else{
       return (currency * 100).toFixed(0) * 1;
     }
-  } else if ( _.isNumber(val) ) {
+  } else if ( isType('Number', val) ) {
     return val.toFixed(0) * 1;
   } else {
     return new Error('Should pass in a number or string');
   }
 };
+
+/**
+ * isType(type, obj)
+ * Supported types: 'Function', 'String', 'Number', 'Date', 'RegExp',
+ * 'Arguments'
+ * source: https://github.com/jashkenas/underscore/blob/1.5.2/underscore.js#L996
+ */
+
+function isType(type, obj) {
+  return Object.prototype.toString.call(obj) == '[object ' + type + ']';
+}
