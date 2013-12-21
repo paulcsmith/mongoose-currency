@@ -1,14 +1,22 @@
+'use strict';
 var mongoose = require('mongoose');
 var _ = require('underscore');
+var util = require('util');
 
 module.exports.loadType = function(mongoose) {
-  mongoose.SchemaTypes.Currency = Currency;
-  return mongoose.Types.Currency = Currency;
+  mongoose.Types.Currency = mongoose.SchemaTypes.Currency = Currency;
+  return Currency;
 };
 
 function Currency(path, options) {
   mongoose.SchemaTypes.Number.call(this, path, options);
 }
+
+/*!
+ * inherits
+ */
+
+util.inherits(Currency, mongoose.SchemaTypes.Number);
 
 Currency.prototype.cast = function(val) {
   if ( _.isString(val) ) {
@@ -23,27 +31,10 @@ Currency.prototype.cast = function(val) {
       return (currency * -100).toFixed(0) * 1;
     } else{
       return (currency * 100).toFixed(0) * 1;
-    };
+    }
   } else if ( _.isNumber(val) ) {
     return val.toFixed(0) * 1;
   } else {
     return new Error('Should pass in a number or string');
   }
 };
-
-function handleSingle (val) {
-  return this.cast(val)
-}
-
-function handleArray (val) {
-  var self = this;
-  return val.map( function (m) {
-    return self.cast(m)
-  });
-}
-
-/*!
- * inherits
- */
-
-Currency.prototype.__proto__ = mongoose.SchemaTypes.Number.prototype;
