@@ -1,6 +1,6 @@
 {
   "name": "mongoose-currency",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Adds schema type \"currency\" to mongoose. Great for converting user input.",
   "main": "index.js",
   "scripts": {
