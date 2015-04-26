@@ -2,7 +2,10 @@
  * Module dependencies.
  */
 
+var utils = require('../utils');
+
 var SchemaType = require('../schematype');
+var utils = require('../utils');
 
 /**
  * Boolean SchemaType constructor.
@@ -14,13 +17,22 @@ var SchemaType = require('../schematype');
  */
 
 function SchemaBoolean (path, options) {
-  SchemaType.call(this, path, options);
-};
+  SchemaType.call(this, path, options, 'Boolean');
+}
+
+/**
+ * This schema type's name, to defend against minifiers that mangle
+ * function names.
+ *
+ * @api private
+ */
+SchemaBoolean.schemaName = 'Boolean';
 
 /*!
  * Inherits from SchemaType.
  */
-SchemaBoolean.prototype.__proto__ = SchemaType.prototype;
+SchemaBoolean.prototype = Object.create( SchemaType.prototype );
+SchemaBoolean.prototype.constructor = SchemaBoolean;
 
 /**
  * Required validator
@@ -58,9 +70,10 @@ function handleArray (val) {
   });
 }
 
-SchemaBoolean.$conditionalHandlers = {
+SchemaBoolean.$conditionalHandlers =
+  utils.options(SchemaType.prototype.$conditionalHandlers, {
     '$in': handleArray
-}
+  });
 
 /**
  * Casts contents for queries.
