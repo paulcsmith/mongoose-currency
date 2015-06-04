@@ -153,7 +153,7 @@ describe('Currency Type', function () {
       record.validate(function (err) {
         should.exist(err);
         err.errors.should.have.property('price');
-        err.errors.price.type.should.equal('required');
+        err.errors.price.kind.should.equal('required');
         done();
       });
     });
@@ -173,7 +173,7 @@ describe('Currency Type', function () {
       record.validate(function (err) {
         should.exist(err);
         err.errors.should.have.property('price');
-        err.errors.price.type.should.equal('min');
+        err.errors.price.kind.should.equal('min');
         done();
       });
     });
@@ -184,7 +184,7 @@ describe('Currency Type', function () {
       record.validate(function (err) {
         should.exist(err);
         err.errors.should.have.property('price');
-        err.errors.price.type.should.equal('max');
+        err.errors.price.kind.should.equal('max');
         done();
       });
     });

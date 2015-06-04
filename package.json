@@ -1,6 +1,6 @@
 {
   "name": "mongoose-currency",
-  "version": "0.0.4",
+  "version": "0.2.0",
   "description": "Adds schema type \"currency\" to mongoose. Great for converting user input.",
   "main": "index.js",
   "scripts": {
@@ -25,9 +25,9 @@
   "devDependencies": {
     "mocha": "1.9.x",
     "should": "*",
-    "mongoose": "3.x"
+    "mongoose": "~> 4.x"
   },
   "peerDependencies": {
-    "mongoose": "3.x"
+    "mongoose": "~> 4.x"
   }
 }
