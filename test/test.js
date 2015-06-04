@@ -13,7 +13,7 @@ describe('Currency Type', function () {
     it('should have a loadType method', function () {
       var currencyModule = require('../index.js');
       currencyModule.should.have.ownProperty('loadType');
-      currencyModule.loadType.should.be.a('function');
+      currencyModule.loadType.should.be.a.Function;
     });
   });
 
@@ -28,10 +28,10 @@ describe('Currency Type', function () {
       mongoose.Types.should.have.ownProperty('Currency');
     });
     it('should be a function', function () {
-      mongoose.Schema.Types.Currency.should.be.a('function');
+      mongoose.Schema.Types.Currency.should.be.a.Function;
     });
     it('should have a method called cast', function () {
-      mongoose.Schema.Types.Currency.prototype.cast.should.be.a('function');
+      mongoose.Schema.Types.Currency.prototype.cast.should.be.a.Function;
     });
   });
 
