@@ -4,7 +4,7 @@
 * Strips out symbols from the beginning of strings (sometimes users include the currency symbol)
 * Strips out commas (sometimes users add in commas or copy paste values into forms, e.g. "1,000.50)
 * Only save from two digits past the decimal point ("$500.559" is converted to 50055 and doesn't round)
-* Strips [a-zA-Z] from strings
+* Strips [a-z, A-Z] from strings
 * Pass in a string or a number. Numbers will be stored AS IS.
 * Assumes that if you set the value to an integer you have already done the conversion (e.g. 50000 = $500.00)
 * If a floating point number is passed in it will round it. (500.55 -> 501). Just pass in integers to be safe.
