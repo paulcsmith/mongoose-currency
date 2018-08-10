@@ -92,7 +92,7 @@ describe('Currency Type', function () {
 
   describe('setting a currency field and saving the record', function () {
     before(function () {
-      mongoose.connect('localhost', 'mongoose_currency_test');
+      mongoose.connect('mongodb://localhost:27017/mongoose_currency_test',{ useNewUrlParser: true });
     });
     after(function () {
       mongoose.connection.db.dropDatabase();
