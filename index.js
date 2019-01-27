@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose');
-var util = require('util');
 
 module.exports.loadType = function(mongoose) {
   mongoose.Types.Currency = mongoose.SchemaTypes.Currency = Currency;
@@ -15,7 +14,7 @@ function Currency(path, options) {
  * inherits
  */
 
-util.inherits(Currency, mongoose.SchemaTypes.Number);
+Currency.prototype = mongoose.SchemaTypes.Number.prototype;
 
 Currency.prototype.cast = function(val) {
   if ( isType('String', val) ) {
