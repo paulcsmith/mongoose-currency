@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 var util = require('util');
 
-module.exports.loadType = function(mongoose) {
+const loadType = function(mongoose) {
   mongoose.Types.Currency = mongoose.SchemaTypes.Currency = Currency;
   return Currency;
 };
@@ -48,3 +48,6 @@ Currency.prototype.cast = function(val) {
 function isType(type, obj) {
   return Object.prototype.toString.call(obj) == '[object ' + type + ']';
 }
+
+
+export default loadType
