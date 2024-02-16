@@ -25,14 +25,14 @@ Currency.prototype.cast = function(val) {
     var findNegativeRegex = /^-/;
     var currency;
     currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
-    currency = findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]; // Adds .0 so it works with whole numbers
+    currency = parseFloat(findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]); // Adds .0 so it works with whole numbers
     if ( findNegativeRegex.test(currencyAsString) ) {
-      return (currency * -100).toFixed(0) * 1;
+      return parseFloat((currency* -100).toFixed(0));
     } else{
-      return (currency * 100).toFixed(0) * 1;
+      return parseFloat((currency* 100).toFixed(0));
     }
   } else if ( isType('Number', val) ) {
-    return val.toFixed(0) * 1;
+    return val.toFixed(0);
   } else {
     return new Error('Should pass in a number or string');
   }
