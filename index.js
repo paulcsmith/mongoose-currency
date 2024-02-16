@@ -25,7 +25,7 @@ Currency.prototype.cast = function(val) {
     var findNegativeRegex = /^-/;
     var currency;
     currencyAsString = currencyAsString.replace(findCommasAndLettersRegex, "");
-    currency = parseFloat(findDigitsAndDotRegex.exec(currencyAsStringCleaned + ".0")[0]); // Adds .0 so it works with whole numbers
+    currency = parseFloat(findDigitsAndDotRegex.exec(currencyAsString + ".0")[0]); // Adds .0 so it works with whole numbers
     if ( findNegativeRegex.test(currencyAsString) ) {
       return parseFloat((currency* -100).toFixed(0));
     } else{
